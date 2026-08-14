@@ -21,9 +21,15 @@ npm install
 
 2. Cria um `.env` na raiz com base no `.env.example`:
 
+Dentro do .env.example tem o banco de dados que deve ser colado, para visualização do mesmo.
+Caso deseje criar um novo, usar semelhante embaixo com suas credenciais, para o mesmo funcionar
+Obs: Banco feito em PostgreSQL.
+
+```env
 DATABASE_URL="postgresql://usuario:senha@host:porta/banco"
 DIRECT_URL="postgresql://usuario:senha@host:porta/banco"
 PORT=3333
+```
 
 3. Roda as migrations do Prisma pra criar as tabelas no banco:
 
