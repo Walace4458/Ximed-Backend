@@ -1,0 +1,49 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Etapas obrigatórias da fila + cancelado
+enum AtendimentoStatus {
+  RECEPCAO
+  ENFERMAGEM
+  MEDICO
+  LIBERACAO
+  CANCELADO
+}
+
+// Tabela de Pessoas (Mini CRM)
+model Person {
+  id        String   @id @default(uuid())
+  name      String
+  cpf       String   @unique
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  atendimento Atendimento[]
+
+  @@map("persons")
+}
+
+// Tabela de Atendimentos (A Fila)
+model Atendimento {
+  id        String           @id @default(uuid())
+  personId  String
+  status    AtendimentoStatus @default(RECEPCAO)
+  priority  String?          @default("NORMAL")
+  notes     String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  person Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@map("atendimento")
+}
